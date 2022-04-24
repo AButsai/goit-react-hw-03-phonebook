@@ -1,0 +1,25 @@
+.item {
+  margin-bottom: 8px;
+  max-width: 350px;
+  display: flex;
+
+  align-items: center;
+}
+
+.spanNumber {
+  margin-right: 5px;
+}
+
+.span {
+  font-weight: 500;
+  font-size: 16px;
+}
+
+.btn {
+  margin-left: auto;
+  font-size: 14px;
+  padding: 0 5px;
+  background-color: transparent;
+  border-radius: 3px;
+  border: 1px solid #000000;
+}

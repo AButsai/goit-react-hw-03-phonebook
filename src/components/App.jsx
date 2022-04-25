@@ -7,10 +7,30 @@ import Filter from './Filter';
 import s from './App.module.css';
 
 export class App extends Component {
+  static KEY_LOCALSTOREGE_CONTACTS = 'contactsInLocalstorege';
+
   state = {
     contacts: [],
     filter: '',
   };
+
+  componentDidMount() {
+    const contact = localStorage.getItem(this.KEY_LOCALSTOREGE_CONTACTS);
+    const parseContacts = JSON.parse(contact);
+
+    if (parseContacts) {
+      this.setState({ contacts: parseContacts });
+    }
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (this.state.contacts !== prevState.contacts) {
+      localStorage.setItem(
+        this.KEY_LOCALSTOREGE_CONTACTS,
+        JSON.stringify(this.state.contacts)
+      );
+    }
+  }
 
   onSubmit = data => {
     const contacts = [...this.state.contacts];
@@ -48,9 +68,7 @@ export class App extends Component {
     return [...data].filter(({ id }) => id !== contactId);
   };
 
-  onDeleteContact = e => {
-    const contactId = e.currentTarget.id;
-
+  onDeleteContact = contactId => {
     this.filterContacts = this.arrayIteration(this.filterContacts, contactId);
     this.setState({ filter: '' });
 

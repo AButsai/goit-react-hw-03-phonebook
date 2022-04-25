@@ -44,17 +44,17 @@ export class App extends Component {
     );
   };
 
+  arrayIteration = (data, contactId) => {
+    return [...data].filter(({ id }) => id !== contactId);
+  };
+
   onDeleteContact = e => {
     const contactId = e.currentTarget.id;
 
-    this.filterContacts = [...this.filterContacts].filter(
-      ({ id }) => id !== contactId
-    );
+    this.filterContacts = this.arrayIteration(this.filterContacts, contactId);
     this.setState({ filter: '' });
 
-    const contacts = [...this.state.contacts].filter(
-      ({ id }) => id !== contactId
-    );
+    const contacts = this.arrayIteration(this.state.contacts, contactId);
 
     this.setState({ contacts: contacts });
   };

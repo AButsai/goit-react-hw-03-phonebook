@@ -7,15 +7,14 @@ import Filter from './Filter';
 import s from './App.module.css';
 
 export class App extends Component {
-  static KEY_LOCALSTOREGE_CONTACTS = 'contactsInLocalstorege';
-
   state = {
     contacts: [],
     filter: '',
+    LOCALSTOREGE_KEY: 'contactsInLocalstorege',
   };
 
   componentDidMount() {
-    const contact = localStorage.getItem(this.KEY_LOCALSTOREGE_CONTACTS);
+    const contact = localStorage.getItem(this.state.LOCALSTOREGE_KEY);
     const parseContacts = JSON.parse(contact);
 
     if (parseContacts) {
@@ -26,7 +25,7 @@ export class App extends Component {
   componentDidUpdate(prevProps, prevState) {
     if (this.state.contacts !== prevState.contacts) {
       localStorage.setItem(
-        this.KEY_LOCALSTOREGE_CONTACTS,
+        this.state.LOCALSTOREGE_KEY,
         JSON.stringify(this.state.contacts)
       );
     }
@@ -36,48 +35,39 @@ export class App extends Component {
     const contacts = [...this.state.contacts];
 
     for (const { name } of contacts) {
-      if (name === data.name) {
+      if (name.toLowerCase() === data.name.toLowerCase()) {
         alert(`${name} is already in contacts.`);
         return;
       }
     }
 
-    contacts.push(data);
-    this.setState({ contacts: contacts });
+    this.setState({ contacts: [...contacts, data] });
   };
 
-  // Массив для отфильтрованных контактов
-  filterContacts = [];
-
   onFilterName = e => {
-    if (e.currentTarget.value === '') {
-      this.setState({ filter: '' });
-      this.filterContacts = [];
-      return;
-    }
-
     const { name, value } = e.currentTarget;
     this.setState({ [name]: value });
+  };
 
-    this.filterContacts = [...this.state.contacts].filter(
-      ({ name }) => name.toLowerCase().indexOf(value.toLowerCase()) !== -1
+  onFilterContacts = () => {
+    const { contacts, filter } = this.state;
+
+    return [...contacts].filter(
+      ({ name }) => name.toLowerCase().indexOf(filter.toLowerCase()) !== -1
     );
   };
 
-  arrayIteration = (data, contactId) => {
-    return [...data].filter(({ id }) => id !== contactId);
-  };
-
   onDeleteContact = contactId => {
-    this.filterContacts = this.arrayIteration(this.filterContacts, contactId);
+    this.setState({
+      contacts: [...this.state.contacts].filter(({ id }) => id !== contactId),
+    });
+
     this.setState({ filter: '' });
-
-    const contacts = this.arrayIteration(this.state.contacts, contactId);
-
-    this.setState({ contacts: contacts });
   };
 
   render() {
+    const filterContacts = this.onFilterContacts();
+
     return (
       <div className={s.container}>
         <h1 className={s.title}>Phonebook</h1>
@@ -89,8 +79,7 @@ export class App extends Component {
         <Filter value={this.state.filter} onFilterName={this.onFilterName} />
 
         <ContactList
-          contacts={this.state.contacts}
-          filterContact={this.filterContacts}
+          filterContact={filterContacts}
           deleteContact={this.onDeleteContact}
         />
       </div>

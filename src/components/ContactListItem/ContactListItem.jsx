@@ -11,10 +11,15 @@ const ContactListItem = props => {
         {name}: {number}
       </span>
       <button
-        id={id}
         className={s.btn}
         onClick={() => {
           deleteContact(id);
+        }}
+        onMouseDown={e => {
+          e.target.style.backgroundColor = '#0a95ff';
+        }}
+        onMouseUp={e => {
+          e.target.style.backgroundColor = 'transparent';
         }}
         type="button"
       >

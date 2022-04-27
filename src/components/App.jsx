@@ -14,11 +14,12 @@ export class App extends Component {
   };
 
   componentDidMount() {
-    const contact = localStorage.getItem(this.state.LOCALSTOREGE_KEY);
+    const { contacts, LOCALSTOREGE_KEY } = this.state;
+    const contact = localStorage.getItem(LOCALSTOREGE_KEY);
     const parseContacts = JSON.parse(contact);
 
     if (parseContacts) {
-      this.setState({ contacts: parseContacts });
+      this.setState({ contacts: [...contacts, parseContacts] });
     }
   }
 
@@ -60,9 +61,8 @@ export class App extends Component {
   onDeleteContact = contactId => {
     this.setState({
       contacts: [...this.state.contacts].filter(({ id }) => id !== contactId),
+      filter: '',
     });
-
-    this.setState({ filter: '' });
   };
 
   render() {

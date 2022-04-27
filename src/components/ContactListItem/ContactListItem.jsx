@@ -3,10 +3,10 @@ import s from './ContactListItem.module.css';
 
 const ContactListItem = props => {
   const { contacts, deleteContact } = props;
+  const { id, name, number } = contacts;
 
-  return contacts.map(({ id, name, number }, index) => (
+  return (
     <li key={id} className={s.item}>
-      <span className={s.spanNumber}>{index + 1}.</span>
       <span className={s.span}>
         {name}: {number}
       </span>
@@ -26,7 +26,7 @@ const ContactListItem = props => {
         Delete
       </button>
     </li>
-  ));
+  );
 };
 
 ContactListItem.propTypes = {

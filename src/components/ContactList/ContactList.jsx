@@ -6,8 +6,12 @@ import s from './ContactList.module.css';
 const ContactList = ({ filterContact, deleteContact }) => {
   return (
     <ul className={s.list}>
-      {filterContact.map(contact => (
-        <ContactListItem contacts={contact} deleteContact={deleteContact} />
+      {filterContact.map(({ id, name, number }) => (
+        <ContactListItem
+          key={id}
+          contacts={{ id, name, number }}
+          deleteContact={deleteContact}
+        />
       ))}
     </ul>
   );

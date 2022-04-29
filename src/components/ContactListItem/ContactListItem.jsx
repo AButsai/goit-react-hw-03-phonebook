@@ -6,7 +6,7 @@ const ContactListItem = props => {
   const { id, name, number } = contacts;
 
   return (
-    <li key={id} className={s.item}>
+    <li className={s.item}>
       <span className={s.span}>
         {name}: {number}
       </span>
@@ -30,13 +30,12 @@ const ContactListItem = props => {
 };
 
 ContactListItem.propTypes = {
-  contacts: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.string.isRequired,
-      name: PropTypes.string.isRequired,
-      number: PropTypes.string.isRequired,
-    })
-  ),
+  contacts: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+    number: PropTypes.string.isRequired,
+  }),
+
   deleteContact: PropTypes.func.isRequired,
 };
 

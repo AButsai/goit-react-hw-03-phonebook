@@ -8,25 +8,25 @@ import s from './App.module.css';
 
 export class App extends Component {
   state = {
+    LOCALSTOREGE_KEY: 'contacts-key',
     contacts: [],
     filter: '',
-    LOCALSTOREGE_KEY: 'contactsInLocalstorege',
   };
 
   componentDidMount() {
-    const { contacts, LOCALSTOREGE_KEY } = this.state;
-    const contact = localStorage.getItem(LOCALSTOREGE_KEY);
-    const parseContacts = JSON.parse(contact);
+    const { LOCALSTOREGE_KEY } = this.state;
+    const contacts = JSON.parse(localStorage.getItem(LOCALSTOREGE_KEY));
 
-    if (parseContacts) {
-      this.setState({ contacts: [...contacts, parseContacts] });
+    if (contacts) {
+      this.setState({ contacts });
     }
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (this.state.contacts !== prevState.contacts) {
+    const { contacts, LOCALSTOREGE_KEY } = this.state;
+    if (contacts !== prevState.contacts) {
       localStorage.setItem(
-        this.state.LOCALSTOREGE_KEY,
+        LOCALSTOREGE_KEY,
         JSON.stringify(this.state.contacts)
       );
     }
